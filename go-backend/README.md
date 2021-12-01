@@ -19,3 +19,9 @@ go mod tidy
 go run cmd/web/\*.go
 
 ### GO
+
+# Pointers
+
+# Receivers
+
+# Interfaces

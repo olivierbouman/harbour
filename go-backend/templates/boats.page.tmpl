@@ -1,0 +1,35 @@
+{{ template "base" . }}
+
+{{ define "content" }}
+
+  <div class="container">
+    <div class="row">
+      <div class="col-md-2"></div>
+      <div class="col-md-8">
+        <h1 class="mt-5">Do something with dates and shit</h1>
+        
+
+        <form action="/boats" method="GET">
+          <div class="row mb-4 mt-5">
+            <div class="col">
+              <label for="start_date" class="form-label">Starting Date</label>
+              <input required type="date" class="form-control" id="start_date" name="start_date" aria-describedby="startDateHelp">
+              <div id="startDateHelp" class="form-text">Enter your starter date in the form of YYYY-MM-DD</div>
+            </div>
+
+            <div class="col">
+              <label for="end_date" class="form-label">Ending Date</label>
+              <input required type="date" class="form-control" id="end_date" name="end_date" aria-describedby="endDateHelp">
+              <div id="endDateHelp" class="form-text">Enter your ending date in the form of YYYY-MM-DD</div>
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-primary">Zoek naar boot(?)</button>
+        </form>
+    
+      </div>
+      <div class="col-md-2"></div>
+    </div>
+  </div>
+
+{{ end }}

@@ -24,6 +24,9 @@ func chi_router(app *config.AppConfig) http.Handler {
 
 	mux.Get("/", handlers.Repo.Home)
 	mux.Get("/about", handlers.Repo.About)
+	mux.Get("/boats", handlers.Repo.Boats)
+	mux.Get("/boats-overview", handlers.Repo.BoatsOverview)
+	mux.Get("/juliette", handlers.Repo.Juliette)
 
 	fileServer := http.FileServer(http.Dir("./static/"))
 	mux.Handle("/static/*", http.StripPrefix("/static", fileServer))

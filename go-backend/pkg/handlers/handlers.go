@@ -31,10 +31,22 @@ func NewHandlers(r *Repository) {
 // The "(m *Repository)" is a receiver
 // The functions with a receiver have access to everything they receive
 func (m *Repository) Home(w http.ResponseWriter, r *http.Request) {
-	remoteIP := r.RemoteAddr
-	m.App.Session.Put(r.Context(), "remote_ip", remoteIP)
-
 	render.RenderTemplate(w, "home.page.tmpl", &models.TemplateData{})
+}
+
+// Juliette is the about page handler
+func (m *Repository) Juliette(w http.ResponseWriter, r *http.Request) {
+	render.RenderTemplate(w, "juliette.page.tmpl", &models.TemplateData{})
+}
+
+// Boats is the about page handler
+func (m *Repository) Boats(w http.ResponseWriter, r *http.Request) {
+	render.RenderTemplate(w, "boats.page.tmpl", &models.TemplateData{})
+}
+
+// Boats_overview is the about page handler
+func (m *Repository) BoatsOverview(w http.ResponseWriter, r *http.Request) {
+	render.RenderTemplate(w, "boats_overview.page.tmpl", &models.TemplateData{})
 }
 
 // About is the about page handler

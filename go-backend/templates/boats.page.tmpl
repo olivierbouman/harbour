@@ -10,26 +10,188 @@
         
 
         <form action="/boats" method="GET">
-          <div class="row mb-4 mt-5">
+          <div class="row">
             <div class="col">
-              <label for="start_date" class="form-label">Starting Date</label>
-              <input required type="date" class="form-control" id="start_date" name="start_date" aria-describedby="startDateHelp">
-              <div id="startDateHelp" class="form-text">Enter your starter date in the form of YYYY-MM-DD</div>
-            </div>
-
-            <div class="col">
-              <label for="end_date" class="form-label">Ending Date</label>
-              <input required type="date" class="form-control" id="end_date" name="end_date" aria-describedby="endDateHelp">
-              <div id="endDateHelp" class="form-text">Enter your ending date in the form of YYYY-MM-DD</div>
+              <div class="row" id="reservation-dates">
+                <div class="col">
+                  <input required class="needs-validation form-control" type="text" name="start" placeholder="Start-datum">
+                </div>
+                <div class="col">
+                  <input required class="needs-validation form-control" type="text" name="end" placeholder="Eind-datum">
+                </div>
+              </div>
             </div>
           </div>
-
-          <button type="submit" class="btn btn-primary">Zoek naar boot(?)</button>
+          <hr>
+          <button type="submit" class="btn btn-primary" onclick="notifyModal()">Zoek naar boot(?)</button>
         </form>
+        <button type="submit" class="btn btn-warning mt-4" onclick="notifyModal(true)">Bonus Toast Button</button>
+        <button type="submit" class="btn btn-success mt-4" onclick="notifyModal(false)">Bonus Button</button>
     
       </div>
       <div class="col-md-2"></div>
     </div>
   </div>
+
+  <script>
+    const Prompt = () => {
+      const toast = (c) => {
+        const {
+          msg = "",
+          icon = "success",
+          position = "top-end",
+        } = c;
+
+        const Toast = Swal.mixin({
+          toast: true,
+          title: msg,
+          position: position,
+          icon: icon,
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+          }
+        })
+
+        Toast.fire({})
+      }
+
+      const success = (c) => {
+        const {
+          msg = "",
+          title = "",
+          footer = "Bonus Success for you!"
+        } = c;
+        Swal.fire({
+          icon: 'success',
+          text: msg,
+          footer: footer
+        })
+      }
+
+      const error = (c) => {
+        const {
+          msg = "",
+          title = "",
+          footer = ""
+        } = c;
+        Swal.fire({
+          icon: 'error',
+          text: msg,
+          footer: footer
+        })
+      }
+
+      const custom = async (c) => {
+        const {
+          msg = "",
+          title = "",
+        } = c;
+
+        const { value: formValues } = await Swal.fire({
+          title: title,
+          html: msg,
+          backdrop: false, // Darkening background screen
+          showCancelButton: true,
+          focusConfirm: false,
+          willOpen: () => {
+            const e = document.getElementById("reservation-dates-modal")
+            const rp = new DateRangePicker(elem, {
+              // ...options
+            })
+          },
+          preConfirm: () => {
+            return [
+              document.getElementById('start').value,
+              document.getElementById('end').value
+            ]
+          }
+        })
+
+        if (formValues) {
+          Swal.fire(JSON.stringify(formValues))
+        }        
+      }
+
+      return {
+        toast: toast,
+        success: success,
+        error: error,
+        custom: custom,
+      }
+    }
+
+    let attention = Prompt();
+
+    (function () {
+      'use strict';
+      window.addEventListener('load', function () {
+          // Fetch all the forms we want to apply custom Bootstrap validation styles to
+          let forms = document.getElementsByClassName('needs-validation');
+          // Loop over them and prevent submission
+          Array.prototype.filter.call(forms, function (form) {
+
+              console.log('got here', form)
+              form.addEventListener('submit', function (event) {
+                  if (form.checkValidity() === false) {
+                      event.preventDefault();
+                      event.stopPropagation();
+                  }
+                  form.classList.add('was-validated');
+              }, false);
+          });
+      }, false);
+    })();
+
+    const elem = document.getElementById('reservation-dates');
+    const rangepicker = new DateRangePicker(elem, {
+      // ...options
+    });
+
+    const notifyModal = (t) => {
+      // Swal.fire(
+      //   'Good job!',
+      //   'You clicked the button!',
+      //   'success'
+      // )
+
+      let html = `
+        <form id="check-availability-form" action="" method="post" novalidate class="needs-validation">
+          <div class="row">
+            <div class="col">
+              <div class="row" id="reservation-dates-modal">
+                <div class="col">
+                  <input required class="form-control" type="text" name="start" id="start" placeholder="Arrival">
+                </div>
+                <div class="col">
+                  <input required class="form-control" type="text" name="end" id="end" placeholder="Departure">
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      `
+      
+      if (t===true){
+        attention.toast({msg: "Succesvol afgerond"})
+      } else {
+        attention.success({msg: "Well Done!"})
+      }
+      // attention.custom({msg: html, title: "Choose your dates"})
+    }
+
+    const notify = (msg, msgType) => {
+      notie.alert({
+        type: msgType,
+        text: msg,
+      })
+    }
+
+
+
+  </script>
 
 {{ end }}

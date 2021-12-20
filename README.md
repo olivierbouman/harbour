@@ -13,3 +13,7 @@ React
 # Mobile app
 ReactNative
 
+# AUTH
+usr: root
+pwd: golang
+
